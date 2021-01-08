@@ -5,9 +5,19 @@ var m = moment();
 var newDay = moment().hour(0);
 var dayStart = moment().hour(9);
 var presentTime = m.hour();
+var toDay = moment().format('MM DD YYYY')
 
-
-
+//var queryUrl = "https:cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js";
+//$.ajax({
+  //  url: queryURL,
+ //   method: "GET"
+ // });
+    // We store all of the retrieved data inside of an object called "response"
+//.then(function(response) {
+        $("#currentDay").html("<p> Today's date is: " + toDay + "</p>");
+        $("#currentTime").html("<p> The current time is: " + presentTime +  "</p>");
+    //});
+//logging this day's date and time in the "lead Class"
 
 //creating textareas for desired inputs
 for (var hour = 9; hour < 18; hour++) {
