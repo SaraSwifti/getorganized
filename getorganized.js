@@ -1,124 +1,25 @@
 //global variables
-var inputHours = [];
-var availableHours = {};
-var m = moment();
-var newDay = moment().hour(0);
-var dayStart = moment().hour(9);
-var presentTime = m.hour();
-var toDay = moment().format('MM DD YYYY')
+var inputHours = ["9am","10am","11fam","12pm","1pm","2pm","3pm"];
 
-//var queryUrl = "https:cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js";
-//$.ajax({
-  //  url: queryURL,
- //   method: "GET"
- // });
-    // We store all of the retrieved data inside of an object called "response"
-//.then(function(response) {
-        $("#currentDay").html("<p> Today's date is: " + toDay + "</p>");
-        $("#currentTime").html("<p> The current time is: " + presentTime +  "</p>");
-    //});
-//logging this day's date and time in the "lead Class"
 
-//creating textareas for desired inputs
-for (var hour = 9; hour < 18; hour++) {
-  inputHours.push(moment({hour}).format('h  a'));
-  $('.container').append(`<div class='row time' data-time='${hour}'>
-       <!--hour column-->
-           <div class='col-sm col-md-2 hour'>
-             <p>${moment({hour}).format('h  a')}</p>
-           </div>
-        <!--scheduling column-->
-           <div class='col-sm col-md-10 d-flex description'>
-              <div class='input-group'>
-                <textarea class="form-control text-area"></textarea>
-                <div class='input-group-append'>
-                  <button class='save-btn d-flex justify-center align-center'>
-                  <i class="fas fa-calendar-week"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>`);
+//this code will create the time slots and save key variables for each key/attriburte
+for (var i = 0; i < inputHours.length; i++) {
+  var timeSlot = $("<div>");
+  timeSlot.addClass("hour col-xs-2 col-sm-2 col-md-2 col-lg-2");
+  timeSlot.text(inputHours[i]);
+  var inputSched = $("<div>");
+  inputSched.addClass("future col-xs-9 col-sm-9 col-md-9 col-lg-9 description");
+  var saveButton = ("<button>");
+  saveButton.addClass("col-xs-1 col-sm-1 col-md-1 col-lg-1 fas fa-save btn-block saveBtn");
+  var tRow = $("<div>");
+  tRow.addClass("row time-block");
+  tRow.append(timeSlot, inputSched, saveButton);
+
 }
 
-//Checking time to determine present, past, or future
-$.each($('.time-block'), function(index, value) {
-  let dateHour = $(value).attr('data-time');
-   if (Number(dateHour) === m.hour()) {
-      $(this).find('textarea').addClass('present');
-    } else if (Number(dateHour) < m.hour()) {
-      $(this).find('textarea').addClass('past').attr('disabled', 'disabled');
-      $(this).find('.save-button').addClass('disabled').attr('disabled', true);
-    } else {
-      $(this).find('textarea').addClass('future');
-    }
- });
-
-console.log(dayStart);
-console.log(presentTime);
 
 
+  //inputHours[i].append(moment({hour}).format ("h a"));
+ 
+  
 
-//Check for local storage to set value to the object and clearing if presentTime is between non working hours
-if (localStorage.getItem('availableHours')) {
-  availableHours = JSON.parse(localStorage.getItem('availableHours'));
-} else {
-  availableHours = {
-    '9': {
-      time: '9',
-      value: ''
-    },
-    '10': {
-      time: '10',
-      value: ''
-    },
-    '11': {
-      time: '11',
-      value: ''
-    },
-    '12': {
-      time: '12',
-      value: ''
-    },
-    '13': {
-      time: '13',
-      value: ''
-    },
-    '14': {
-      time: '14',
-      value: ''
-    },
-    '15': {
-      time: '15',
-      value: ''
-    },
-    '16': {
-      time: '16',
-      value: ''
-    },
-    '17': {
-      time: '17',
-      value: ''
-    }
-  };
-}
-
-//set value of availableHours to equal the user input for each row
-$('.time-block').each(function() {
-  $(this).find('.text-area').val(availableHours[$(this).attr('data-time')].value);
-});
-
-//saving value to the local storage using click
-$('.save-button').on('click', function(event){
-  event.preventDefault();
-
-  //setting availableHours time attribute
-  var timeValue = $(this).closest('.time-block').attr('data-time');
-
-  //setting availableHours value attribute
-    var textValue = $(this).closest('.time-block').find('.text-area').val();
-    availableHours[timeValue].value = textValue;
-
-  //saving users input into each object to local storage
-    localStorage.setItem('availableHours', JSON.stringify(availableHours));
-});
